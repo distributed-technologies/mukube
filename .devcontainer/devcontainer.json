@@ -23,5 +23,8 @@
 	// "postCreateCommand": "uname -a",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode"
+	"remoteUser": "vscode",
+
+	"workspaceMount": "source=home/andreas/mukube,target=/workspace,type=bind,consistency=cached",
+	"workspaceFolder": "/workspace"
 }
