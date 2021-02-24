@@ -3,7 +3,12 @@
 default : buildroot
 	cp config buildroot/.config
 	$(MAKE) -C buildroot 
+	cd buildroot/output/images && find | cpio -pd ../../../output
 
+menuconfig : buildroot
+	cp config buildroot/.config 
+	$(MAKE) -C buildroot menuconfig
+	cp buildroot/.config config
 
 # Clones the stable branch of buildroot.
 buildroot : 
