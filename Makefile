@@ -4,6 +4,7 @@ default : buildroot
 	cp config buildroot/.config
 	$(MAKE) -C buildroot 
 	cd buildroot/output/images && find | cpio -pd ../../../output
+	mv output/rootfs.iso9660 output/rootfs.iso 
 
 menuconfig : buildroot
 	cp config buildroot/.config 
