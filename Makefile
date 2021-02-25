@@ -11,6 +11,7 @@ menuconfig : buildroot
 	$(MAKE) -C buildroot menuconfig
 	cp buildroot/.config config
 
-# Clones the stable branch of buildroot.
+# Clones the stable branch of buildroot. 
+# This is released every three months, the tag is YYYY.MM.x 
 buildroot : 
 	git clone --depth 1 --branch 2020.11.3 git://git.buildroot.net/buildroot
