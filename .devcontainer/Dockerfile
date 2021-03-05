@@ -15,3 +15,12 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     kmod jfsutils reiserfsprogs xfsprogs squashfs-tools btrfs-progs \
     quotatool ppp oprofile udev grub2 iptables openssl 
 
+# Packages needed to run VM's via the commandline
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get install -y --no-install-recommends \
+    qemu-kvm libvirt-dev libvirt-daemon-system bridge-utils dnsmasq virtinst
+
+# DejaGnu test framework 
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y --no-install-recommends install dejagnu 
+
