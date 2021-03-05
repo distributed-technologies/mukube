@@ -24,5 +24,3 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y --no-install-recommends install dejagnu 
 
-# Dependencies for starting running a VM
-
