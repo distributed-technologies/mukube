@@ -1,0 +1,19 @@
+
+# The hostname should be specified at buildtime. 
+# I need to read the correct hostname from the config files.
+
+set test_name "hostname"
+
+spawn hostname 
+
+expect {
+    ITMDKLT097 {
+        pass $test_name 
+    }
+    eof {
+        fail "$test_name hostname did not match." 
+    }
+    timeout {
+        fail "$test_name timed out." 
+    }
+}

@@ -1,0 +1,15 @@
+set test_name "Ping example.com"
+
+spawn ping example.com -c 1
+
+expect {
+    "packets transmitted" {
+        pass $test_name
+    }
+    failure {
+        fail $test_name
+    }
+    eof {
+        unresolved $test_name
+    }
+}
