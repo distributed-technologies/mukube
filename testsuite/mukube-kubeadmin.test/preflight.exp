@@ -1,19 +1,21 @@
 
-# The hostname should be specified at buildtime. 
-# I need to read the correct hostname from the config files.
+# # The hostname should be specified at buildtime. 
+# # I need to read the correct hostname from the config files.
 
-set test_name "Kubernetes preflight check"
+# set test_name "Kubernetes preflight check"
 
-spawn kubeadm init phase preflight 
+# send kubeadm init phase preflight 
 
-expect {
-    ITMDKLT097 {
-        pass $test_name 
-    }
-    -re .ERROR.*$ {
-        fail "$test_name $expect_out(0,string)" 
-    }
-    default {
-        fail "$test_name ended" 
-    }
-}
+# expect {
+#     ITMDKLT097 {
+#         pass $test_name 
+#     }
+#     -re .ERROR.*$ {
+#         fail "$test_name $expect_out(0,string)" 
+#     }
+#     default {
+#         fail "$test_name ended" 
+#     }
+# }
+
+fail "preflight"

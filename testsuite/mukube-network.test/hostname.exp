@@ -4,14 +4,14 @@
 
 set test_name "hostname"
 
-spawn hostname 
+send "hostname\r" 
 
 expect {
     ITMDKLT097 {
         pass $test_name 
     }
-    eof {
-        fail "$test_name $expect_out(buffer)" 
+    "#" {
+        fail "$test_name returned to prompt. $expect_out(buffer)" 
     }
     timeout {
         fail "$test_name timed out." 

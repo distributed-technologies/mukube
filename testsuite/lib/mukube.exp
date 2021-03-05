@@ -1,1 +1,10 @@
 
+
+spawn virt-install --name mukube-test --ram 512 --vcpus 2 --network default,model=e1000 --livecd --nodisk \
+    --cdrom /workspace/output/rootfs.iso \
+
+expect {
+    Energinet login: {
+        send root 
+    }
+}

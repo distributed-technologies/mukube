@@ -1,6 +1,9 @@
 set test_name "Ping example.com"
 
-spawn ping example.com -c 1
+send "\r"
+expect #
+
+send "ping example.com -c 1\r"
 
 expect {
     "packets transmitted" {
@@ -11,5 +14,8 @@ expect {
     }
     eof {
         unresolved "$test_name $expect_out(0,string)"
+    }
+    timeout {
+        fail "$test_name timed out"
     }
 }

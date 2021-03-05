@@ -1,4 +1,4 @@
-Test run by vscode on Fri Mar  5 12:22:07 2021
+Test run by vscode on Fri Mar  5 12:50:22 2021
 Native configuration is x86_64-pc-linux-gnu
 
 		=== mukube tests ===
@@ -11,43 +11,18 @@ Using /usr/share/dejagnu/baseboards/unix.exp as board description file for targe
 Using /usr/share/dejagnu/config/unix.exp as generic interface file for target.
 Using ./config/unix.exp as tool-and-target-specific interface file.
 Running ./mukube-kubeadmin.test/preflight.exp ...
-spawn kubeadm init phase preflight
-ERROR: tcl error sourcing ./mukube-kubeadmin.test/preflight.exp.
-ERROR: couldn't execute "kubeadm": no such file or directory
-    while executing
-"spawn kubeadm init phase preflight "
-    (file "./mukube-kubeadmin.test/preflight.exp" line 7)
-    invoked from within
-"source ./mukube-kubeadmin.test/preflight.exp"
-    ("uplevel" body line 1)
-    invoked from within
-"uplevel #0 source ./mukube-kubeadmin.test/preflight.exp"
-    invoked from within
-"catch "uplevel #0 source $test_file_name""
+FAIL: preflight
 testcase ./mukube-kubeadmin.test/preflight.exp completed in 0 seconds
 Running ./mukube-network.test/hostname.exp ...
-spawn hostname
-d21d53b38fef
-FAIL: hostname d21d53b38fef
-
-testcase ./mukube-network.test/hostname.exp completed in 0 seconds
+hostname
+FAIL: hostname timed out.
+testcase ./mukube-network.test/hostname.exp completed in 10 seconds
 Running ./mukube-network.test/ping.exp ...
-spawn ping example.com -c 1
-ERROR: tcl error sourcing ./mukube-network.test/ping.exp.
-ERROR: couldn't execute "ping": no such file or directory
-    while executing
-"spawn ping example.com -c 1"
-    (file "./mukube-network.test/ping.exp" line 3)
-    invoked from within
-"source ./mukube-network.test/ping.exp"
-    ("uplevel" body line 1)
-    invoked from within
-"uplevel #0 source ./mukube-network.test/ping.exp"
-    invoked from within
-"catch "uplevel #0 source $test_file_name""
-testcase ./mukube-network.test/ping.exp completed in 0 seconds
+
+ping example.com -c 1
+testcase ./mukube-network.test/ping.exp completed in 20 seconds
 
 		=== mukube Summary ===
 
-# of unexpected failures	1
-runtest completed at Fri Mar  5 12:22:07 2021
+# of unexpected failures	2
+runtest completed at Fri Mar  5 12:50:52 2021
