@@ -11,7 +11,7 @@ expect {
         pass $test_name 
     }
     eof {
-        fail "$test_name hostname did not match." 
+        fail "$test_name $expect_out(buffer)" 
     }
     timeout {
         fail "$test_name timed out." 

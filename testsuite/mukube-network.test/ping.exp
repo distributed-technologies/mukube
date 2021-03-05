@@ -7,9 +7,9 @@ expect {
         pass $test_name
     }
     failure {
-        fail $test_name
+        fail "$test_name $expect_out(0,string)"
     }
     eof {
-        unresolved $test_name
+        unresolved "$test_name $expect_out(0,string)"
     }
 }

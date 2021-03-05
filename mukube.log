@@ -1,0 +1,16 @@
+Test run by vscode on Fri Mar  5 12:11:15 2021
+Native configuration is x86_64-pc-linux-gnu
+
+		=== mukube tests ===
+
+Schedule of variations:
+    unix
+
+Running target unix
+Using /usr/share/dejagnu/baseboards/unix.exp as board description file for target.
+Using /usr/share/dejagnu/config/unix.exp as generic interface file for target.
+WARNING: Couldn't find tool config file for unix, using default.
+
+		=== mukube Summary ===
+
+runtest completed at Fri Mar  5 12:11:15 2021

@@ -1,0 +1,15 @@
+#!/bin/bash 
+
+
+coproc VM { virt-install --name mukube-test \
+        --ram 512 \
+        --vcpus 2 \
+        --cdrom /home/andreas/mukube/output/rootfs.iso \
+        --network default,model=e1000 \
+        --livecd --nodisk; }
+
+# virsh start mukube-test --console 
+
+# ping example.com 
+
+# virsh undefine mukube-test
