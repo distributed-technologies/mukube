@@ -3,19 +3,19 @@ set test_name "Ping example.com"
 send "\r"
 expect #
 
-send "ping example.com -c 1\r"
+send "ping example.com -c 1 -W 8\r"
 
 expect {
-    "packets transmitted" {
+    "0% packet loss" {
         pass $test_name
     }
-    failure {
-        fail "$test_name $expect_out(0,string)"
+    "100% packet loss" {
+        fail "$test_name $expect_out(buffer)"
     }
-    eof {
-        unresolved "$test_name $expect_out(0,string)"
+    "#" {
+        unresolved "$test_name returned prompt unexpectedly: $expect_out(buffer)"
     }
     timeout {
-        fail "$test_name timed out"
+        fail "$test_name timed out: $expect_out(buffer)" 
     }
 }
