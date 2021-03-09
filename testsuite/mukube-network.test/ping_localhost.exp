@@ -1,0 +1,20 @@
+set test_name "Ping localhost test"
+
+expect "#"
+send "ping localhost -c 1 -W 8\r"
+
+expect {
+    " 0% packet loss" {
+        pass $test_name
+    }
+    " 100% packet loss" {
+        fail "$test_name $expect_out(buffer)"
+    }
+    timeout {
+        fail "$test_name timed out. $expect_out(buffer)" 
+    }
+    "#" {
+        fail "$test_name returned prompt unexpectedly. $expect_out(buffer)"
+        send "\r"
+    }
+}
