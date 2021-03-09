@@ -1,10 +1,57 @@
 
+# We perform the setup and preparation of the virtual machine runnig the image.
 
-spawn virt-install --name mukube-test --ram 512 --vcpus 2 --network default,model=e1000 --livecd --nodisk \
-    --cdrom /workspace/output/rootfs.iso \
+# Use the virsh shell to turn off and forget about running instances of the mukube-test VM
+# Note that we wait for the prompt before issueing any command  
+spawn virsh 
+while {1} {
+    expect "virsh #"
+    send "list --all\r"
+    expect {
+        "mukube-test   running" {
+            expect "virsh #"
+            send "destroy mukube-test\r"
+        }
+        "mukube-test   shut off" {
+            expect "virsh #"
+            send "undefine mukube-test\r"
+        }
+        "virsh #" {
+            send "quit\r"
+            break
+        }
+    }
+}
 
+# Make a new definition of the mukube-test domain.
+system virt-install --name mukube-test --hvm --ram 512 --vcpus 2 --network default,model=e1000 --graphics none --os-variant generic --livecd --nodisk --noreboot \
+    --cdrom /workspace/output/rootfs.iso 
+
+spawn virsh start mukube-test --console
+
+# Wait for the crng initialization to finish before continueing
 expect {
-    Energinet login: {
-        send root 
+    "crng init done" {
+        send "\r" 
+    }
+    timeout { 
+        send_error "Waiting for crng to initialize\n"
+        exp_continue
+    }
+}
+
+# Performs the login as the root user
+expect {
+    "Energinet login:" {
+        send "root\r"
+        # verify that the login was successfull and the prompt returned.
+        expect {
+            "#" {
+                send "\r"
+            }
+            timeout {
+                send_error "ERROR: Unsuccessfull login\n" 
+            }
+        }
     }
 }
