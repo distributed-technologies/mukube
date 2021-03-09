@@ -1,15 +1,10 @@
 
-# The hostname should be specified at buildtime. 
-# I need to read the correct hostname from the config files.
-
-set test_name "Hostname"
-
 expect "#"
-send "hostname\r" 
+send "echo Hello Mukube\r"
 
 expect {
-    "Energinet" {
-        pass $test_name 
+    "\nHello Mukube" {
+        pass "we can echo"
     }
     timeout {
         fail "$test_name timed out. $expect_out(buffer)" 
