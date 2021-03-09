@@ -19,6 +19,3 @@ buildroot :
 .PHONY : clean
 clean :
 	rm -rf output/*
-
-# starting the vm in the cloud.
-# sudo virt-install --virt-type=kvm --name=mukubev3 --ram 512 --vcpus=1 --hvm --network network=default,model=e1000 --nodisk --livecd --graphics vnc --cdrom /home/andreas/mukube/output/rootfs.iso
