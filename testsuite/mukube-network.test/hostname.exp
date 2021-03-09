@@ -2,7 +2,7 @@
 # The hostname should be specified at buildtime. 
 # I need to read the correct hostname from the config files.
 
-set test_name "Hostname"
+set test_name "Hostname test"
 
 expect "#"
 send "hostname\r" 

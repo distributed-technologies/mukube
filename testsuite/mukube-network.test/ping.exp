@@ -1,4 +1,4 @@
-set test_name "Ping example.com"
+set test_name "Ping example.com test"
 
 expect "#"
 send "ping example.com -c 1 -W 8\r"

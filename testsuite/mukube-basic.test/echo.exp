@@ -1,10 +1,12 @@
 
+set test_name "Echo test"
+
 expect "#"
 send "echo Hello Mukube\r"
 
 expect {
     "\nHello Mukube" {
-        pass "we can echo"
+        pass "$test_name"
     }
     timeout {
         fail "$test_name timed out. $expect_out(buffer)" 
