@@ -6,10 +6,10 @@ send "kubeadm init phase preflight\r"
 
 expect {
     -re .ERROR.*$ {
-        fail "$test_name:\n$expect_out(0,string)" 
+        fail "$test_name:\n$expect_out(0,string)\n" 
     }
     "kubeadm: not found" {
-        unresolved "$test_name:\n$expect_out(buffer)"
+        unresolved "$test_name. Ran: #$expect_out(buffer)\n"
     }
     timeout {
         fail "$test_name timed out. $expect_out(buffer)" 

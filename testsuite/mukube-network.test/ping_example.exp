@@ -8,7 +8,7 @@ expect {
         pass $test_name
     }
     " 100% packet loss" {
-        fail "$test_name $expect_out(buffer)"
+        fail "$test_name. Ran: #$expect_out(buffer)\n"
     }
     timeout {
         fail "$test_name timed out. $expect_out(buffer)" 
