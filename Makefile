@@ -1,15 +1,19 @@
 
 # Copy the config file into buildroot and invokes the buildscript.
-default : buildroot
+default : buildroot copy_src
 	cp config buildroot/.config
 	$(MAKE) -C buildroot 
 	cd buildroot/output/images && find | cpio -pd ../../../output
 	mv -f output/rootfs.iso9660 output/rootfs.iso 
 
-menuconfig : buildroot
+menuconfig : buildroot copy_src
 	cp config buildroot/.config 
 	$(MAKE) -C buildroot menuconfig
 	cp buildroot/.config config
+
+# Overwrites some static files in the buildroot project.
+copy_src : buildroot
+	cp -fr src/* buildroot/
 
 # Clones the stable branch of buildroot. 
 # This is released every three months, the tag is YYYY.MM.x 
