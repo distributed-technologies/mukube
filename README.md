@@ -9,5 +9,5 @@ To run the accompanying tests go to the `testsuite` directory and run the comman
 
 For more detailed documentation go to 
 
-- [Setup](docs/devcontainer.md)
+- [Setup](docs/setup.md)
 - [Testing](docs/testing.md)
