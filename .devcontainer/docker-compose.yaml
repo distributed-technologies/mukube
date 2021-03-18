@@ -1,0 +1,12 @@
+
+services:
+  devkube:
+    image: devkube
+    build: 
+      context: .
+    user: vscode
+    volumes:
+      - ..:/workspace
+    working_dir: /workspace
+    command: /bin/bash -it
+
