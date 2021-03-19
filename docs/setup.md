@@ -6,6 +6,27 @@ For portability the repository comes with a `.devcontainer/devcontainer.json` fi
 This process uses the VSCode [remote development features](https://code.visualstudio.com/docs/remote/remote-overview), which need to be enabled. 
 And of course docker needs to be installed. 
 
+### Launch using docker-compose
+If not using the *VSCode: Remote - Containers* extension there is a `docker-compose.yaml` describing how to launch the working environment using `docker-compose`:
+
+1. run `docker-compose up -d` from the `.devcontainer/` folder
+2. exec into the container by running `docker-compose exec devkube bash`
+
+Do the development in the container. 
+
+3. Afterwards, stop the development environmet by running `docker-compose down` 
+
+### Launch using docker
+It is also possible to launch the devleopment containe usind `docker`, 
+
+ 1. Build the image by running `docker build .` in the `.devcontainer/` folder
+ 2. run the container with the command: `docker run -d --mount source=<repository-folder>,target=/workspace/,type=bind <image> /bin/bash -c "while sleep 1000; do :; done"`
+3. exec into the cotainer using `docker exec -it --user vscode --workdir /workspace <container> bash`
+
+After development is done, stop the container using `docker stop <container>`. 
+
+
+
 ## Remote development 
 What seems to be the easiest way to have the build run on a remote machine, while having all the benefits of developing inside a container is to: 
 
