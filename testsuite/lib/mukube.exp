@@ -1,8 +1,8 @@
 
-# We perform the setup and preparation of the virtual machine runnig the image.
+# We perform the setup and preparation of the virtual machine running the image.
 
 # Use the virsh shell to turn off and forget about running instances of the mukube-test VM
-# Note that we wait for the prompt before issueing any command  
+# Note that we wait for the prompt before issuing any command  
 spawn virsh 
 while {1} {
     expect "virsh #"
@@ -25,11 +25,11 @@ while {1} {
 
 # Make a new definition of the mukube-test domain.
 system virt-install --name mukube-test --hvm --ram 512 --vcpus 2 --network default,model=e1000 --graphics none --os-variant generic --livecd --nodisk --noreboot \
-    --cdrom /workspace/output/rootfs.iso 
+    --cdrom /workspaces/mukube/output/rootfs.iso 
 
 spawn virsh start mukube-test --console
 
-# Wait for the crng initialization to finish before continueing
+# Wait for the crng initialization to finish before continuing
 expect {
     "crng init done" {
         send "\r" 

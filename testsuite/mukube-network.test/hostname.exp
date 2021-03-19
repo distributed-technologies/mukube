@@ -1,6 +1,6 @@
 
 # The hostname should be specified at buildtime. 
-# I need to read the correct hostname from the config files.
+# The expected hostname shoul be from the config files.
 
 set test_name "Hostname test"
 
