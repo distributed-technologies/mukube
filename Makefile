@@ -6,6 +6,7 @@ default : buildroot copy_src
 	cd buildroot/output/images && find | cpio -pd ../../../output
 	mv -f output/rootfs.iso9660 output/rootfs.iso 
 
+# Copies the config into buildroot and opens buildroot config. When closed copies config back.
 menuconfig : buildroot copy_src
 	cp config buildroot/.config 
 	$(MAKE) -C buildroot menuconfig
