@@ -1,12 +1,16 @@
 
+# Based on the example docker-compose.yaml found: https://github.com/microsoft/vscode-dev-containers/blob/master/container-templates/docker-compose/.devcontainer/docker-compose.yml
+
 services:
   devkube:
+    # devkube is the development container. It is built using the provided Dockerfile.
     image: devkube
     build: 
       context: .
+    # We specify the user, working folder, and mount the repository into the container
     user: vscode
     volumes:
       - ..:/workspace
     working_dir: /workspace
-    command: /bin/bash -it
-
+    # Override the command, so the container does not exit when run.
+    command: /bin/bash -c "while sleep 1000; do :; done"  
