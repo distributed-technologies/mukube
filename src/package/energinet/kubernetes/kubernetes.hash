@@ -1,0 +1,6 @@
+# Hashes from https://github.com/kubernetes/kubernetes/releases/tag/v1.20.5
+sha256 3edf9c2384a4449efec7eab28b22530982bb44222c6f3d45d9921638cab2fe4c v1.20.5.tar.gz
+sha512 62bd8e4c2e8b361dbc898ac125138f4b75b6b56b748c46957dc524ce5cfe90f488ba1dc3dfcdad17f291ea48be39f3fe7f689b3772e4484893f39f98c6a27138 v1.20.5.tar.gz
+
+# Locally calculated
+sha256 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE
