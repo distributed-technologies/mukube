@@ -1,19 +1,19 @@
 
 # Copy the config file into buildroot and invokes the buildscript.
 default : buildroot copy_src
-	cp config buildroot/.config
+	$(MAKE) -C buildroot defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot 
 	cd buildroot/output/images && find | cpio -pd ../../../output
 	mv -f output/rootfs.iso9660 output/rootfs.iso 
 
-# Copies the config into buildroot and opens buildroot config. When closed copies config back.
-menuconfig : buildroot copy_src
-	cp config buildroot/.config 
+# Uses the buildroot default configurations to save our configurations. 
+menuconfig : buildroot static_file_override
+	$(MAKE) -C buildroot defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot menuconfig
-	cp buildroot/.config config
+	$(MAKE) -C buildroot savedefconfig BR2_DEFCONFIG=../config
 
 # Overwrites some static files in the buildroot project.
-copy_src : buildroot
+static_file_override : buildroot
 	cp -fr src/* buildroot/
 
 # Clones the stable branch of buildroot. 
