@@ -1,1 +1,1 @@
-source "packaeg/energinet/kubernetes/Config.in"
+source "package/energinet/kubernetes/Config.in"
