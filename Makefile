@@ -16,6 +16,15 @@ menuconfig : buildroot static_file_override
 static_file_override : buildroot
 	cp -fr src/fs/iso9660/* buildroot/fs/iso9660/
 
+kubernetes :
+	wget -c https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
+	tar -xf kubernetes-server-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/ --strip-components=2 \
+	--exclude='vendor' --exclude='LICENSE' --exclude='OWNERS'
+	rm kubernetes-server-linux-amd64.tar.gz
+
+cleankubernetes :
+	rm -rf src/board/rootfs_overlay/usr/*
+
 # Clones the stable branch of buildroot. 
 # This is released every three months, the tag is YYYY.MM.x 
 buildroot : 
