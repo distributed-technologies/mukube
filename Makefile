@@ -1,6 +1,6 @@
 
 # Recreate the config file in buildroot and invoke the buildscript.
-default : buildroot copy_src
+default : buildroot static_file_override
 	$(MAKE) -C buildroot BR2_EXTERNAL=../src defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot 
 	cd buildroot/output/images && find | cpio -pd ../../../output
