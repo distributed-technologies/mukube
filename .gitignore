@@ -2,3 +2,6 @@ buildroot/
 output/
 *.sum
 *.log
+
+# The contents is extracted from kubernetes server tarball
+src/board/rootfs_overlay/*
