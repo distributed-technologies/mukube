@@ -12,9 +12,9 @@ menuconfig : buildroot copy_src
 	$(MAKE) -C buildroot menuconfig
 	cp buildroot/.config config
 
-# Overwrites some static files in the buildroot project.
+# Overwrites static isolinux bootloader files in the buildroot project.
 copy_src : buildroot
-	cp -fr src/* buildroot/
+	cp -fr src/fs/iso9660/* buildroot/fs/iso9660/
 
 # Clones the stable branch of buildroot. 
 # This is released every three months, the tag is YYYY.MM.x 
