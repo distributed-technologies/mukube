@@ -12,6 +12,12 @@ menuconfig : buildroot static_file_override
 	$(MAKE) -C buildroot menuconfig
 	$(MAKE) -C buildroot savedefconfig BR2_DEFCONFIG=../config
 
+# Loads the defaultconfig into buildroot and edits the linux kernel config
+linux-menuconfig :
+	$(MAKE) -C buildroot BR2_EXTERNAL=../src defconfig BR2_DEFCONFIG=../config
+	$(MAKE) -C buildroot linux-menuconfig
+	$(MAKE) -C buildroot linux-update-defconfig
+
 # Overwrites static isolinux bootloader files in the buildroot project.
 static_file_override : buildroot
 	cp -fr src/fs/iso9660/* buildroot/fs/iso9660/
