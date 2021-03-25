@@ -23,7 +23,7 @@ bootloader-config-override : buildroot
 	cp -fr src/fs/iso9660/* buildroot/fs/iso9660/
 
 .PHONY : binaries-overlay
-binaries-overlay : src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl
+binaries-overlay : src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl src/board/rootfs_overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd
 
 # We use kubeadm as a placeholder for all the installed kubernetes binaries. 
 src/board/rootfs_overlay/usr/bin/kubeadm : 
@@ -38,6 +38,18 @@ src/board/rootfs_overlay/usr/bin/crictl :
 	wget https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.20.0/crictl-v1.20.0-linux-amd64.tar.gz
 	tar -xf crictl-v1.20.0-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=0
 	rm crictl-v1.20.0-linux-amd64.tar.gz
+
+src/board/rootfs_overlay/usr/bin/helm : 
+	mkdir -p src/board/rootfs_overlay/usr/bin 
+	wget -c https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz
+	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
+	rm helm-v3.5.3-linux-amd64.tar.gz 
+
+src/board/rootfs_overlay/usr/bin/containerd : 
+	mkdir -p src/board/rootfs_overlay/usr/bin 
+	wget -c https://github.com/containerd/containerd/releases/download/v1.4.4/containerd-1.4.4-linux-amd64.tar.gz
+	tar -xf containerd-1.4.4-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr
+	rm containerd-1.4.4-linux-amd64.tar.gz
 
 .PHONY : clean-overlay
 clean-overlay :
