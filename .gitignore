@@ -4,4 +4,4 @@ output/
 *.log
 
 # The contents is extracted from kubernetes server tarball
-src/board/rootfs_overlay/*
+src/board/rootfs_overlay/usr/bin/*
