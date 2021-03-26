@@ -39,5 +39,4 @@ console::respawn:/sbin/getty -L  console 0 vt100 # GENERIC_SERIAL
 ::shutdown:/bin/umount -a -r
 
 # Start our kubernetes stuff
-::sysinit:/usr/bin/containerd
 ::respawn:/usr/bin/kubelet
