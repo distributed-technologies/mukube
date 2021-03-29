@@ -1,0 +1,8 @@
+#!/sbin/openrc-run
+#Service script for containerd. Documentation for writing servic scripts 
+#found at https://github.com/OpenRC/openrc/blob/master/service-script-guide.md
+
+command="/usr/bin/containerd"
+command_args=""
+pidfile="/run/${RC_SVCNAME}.pid"
+command_background=true
