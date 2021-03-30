@@ -23,7 +23,7 @@ bootloader-config-override : buildroot
 	cp -fr src/fs/iso9660/* buildroot/fs/iso9660/
 
 .PHONY : binaries-overlay
-binaries-overlay : src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl src/board/rootfs_overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd
+binaries-overlay : src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl src/board/rootfs_overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd src/board/rootfs_overlay/opt/cni/bin
 
 # We use kubeadm as a placeholder for all the installed kubernetes binaries.
 src/board/rootfs_overlay/usr/bin/kubeadm :
@@ -51,9 +51,17 @@ src/board/rootfs_overlay/usr/bin/containerd :
 	tar -xf containerd-1.4.4-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr
 	rm containerd-1.4.4-linux-amd64.tar.gz
 
+src/board/rootfs_overlay/opt/cni/bin :
+	mkdir -p src/board/rootfs_overlay/opt/cni/bin
+	wget -c https://github.com/containernetworking/plugins/releases/download/v0.9.1/cni-plugins-linux-amd64-v0.9.1.tgz
+	tar -xf cni-plugins-linux-amd64-v0.9.1.tgz -C src/board/rootfs_overlay/opt/cni/bin
+	rm cni-plugins-linux-amd64-v0.9.1.tgz
+
+
 .PHONY : clean-overlay
 clean-overlay :
 	rm -rf src/board/rootfs_overlay/usr/bin/*
+	rm -rf src/board/rootfs_overlay/opt/*
 
 # Clones the stable branch of buildroot.
 # This is released every three months, the tag is YYYY.MM.x
