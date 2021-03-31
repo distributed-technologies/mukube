@@ -23,14 +23,14 @@ bootloader-config-override : buildroot
 	cp -fr src/fs/iso9660/* buildroot/fs/iso9660/
 
 .PHONY : binaries-overlay
-binaries-overlay : src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl src/board/rootfs_overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd src/board/rootfs_overlay/opt/cni/bin
+binaries-overlay : src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl src/board/rootfs_overlay/usr/bin/helm src/board/rootfs_overlay/usr/local/bin/containerd 
 
 # We use kubeadm as a placeholder for all the installed kubernetes binaries.
 src/board/rootfs_overlay/usr/bin/kubeadm :
 	mkdir -p src/board/rootfs_overlay/usr
 	wget https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
-	tar -xf kubernetes-server-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/ --strip-components=2 \
-	--exclude='vendor' --exclude='LICENSE' --exclude='OWNERS'
+	tar -xf kubernetes-server-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=3 \
+	--exclude=*.tar --exclude=*.docker_tag --exclude=*.org --exclude=*.com --exclude=*.io --exclude=*.in
 	rm kubernetes-server-linux-amd64.tar.gz
 
 src/board/rootfs_overlay/usr/bin/crictl :
@@ -45,17 +45,12 @@ src/board/rootfs_overlay/usr/bin/helm :
 	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
 	rm helm-v3.5.3-linux-amd64.tar.gz
 
-src/board/rootfs_overlay/usr/bin/containerd :
-	mkdir -p src/board/rootfs_overlay/usr/bin
-	wget -c https://github.com/containerd/containerd/releases/download/v1.4.4/containerd-1.4.4-linux-amd64.tar.gz
-	tar -xf containerd-1.4.4-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr
-	rm containerd-1.4.4-linux-amd64.tar.gz
-
-src/board/rootfs_overlay/opt/cni/bin :
-	mkdir -p src/board/rootfs_overlay/opt/cni/bin
-	wget -c https://github.com/containernetworking/plugins/releases/download/v0.9.1/cni-plugins-linux-amd64-v0.9.1.tgz
-	tar -xf cni-plugins-linux-amd64-v0.9.1.tgz -C src/board/rootfs_overlay/opt/cni/bin
-	rm cni-plugins-linux-amd64-v0.9.1.tgz
+src/board/rootfs_overlay/usr/local/bin/containerd :
+	mkdir -p src/board/rootfs_overlay/
+	wget -c https://github.com/containerd/containerd/releases/download/v1.4.4/cri-containerd-cni-1.4.4-linux-amd64.tar.gz
+	tar -xf cri-containerd-cni-1.4.4-linux-amd64.tar.gz -C src/board/rootfs_overlay/
+	rm -rf src/board/rootfs_overlay/etc/systemd
+	rm cri-containerd-cni-1.4.4-linux-amd64.tar.gz
 
 
 .PHONY : clean-overlay
