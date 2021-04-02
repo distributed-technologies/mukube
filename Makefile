@@ -27,8 +27,8 @@ binaries-overlay : src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_ove
 
 # We use kubeadm as a placeholder for all the installed kubernetes binaries.
 src/board/rootfs_overlay/usr/bin/kubeadm :
-	mkdir -p src/board/rootfs_overlay/usr
-	wget https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
+	mkdir -p src/board/rootfs_overlay/usr/bin
+	wget -c https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
 	tar -xf kubernetes-server-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=3 \
 	--exclude=*.tar --exclude=*.docker_tag --exclude=*.org --exclude=*.com --exclude=*.io --exclude=*.in
 	rm kubernetes-server-linux-amd64.tar.gz
@@ -55,7 +55,7 @@ src/board/rootfs_overlay/usr/local/bin/containerd :
 
 .PHONY : clean-overlay
 clean-overlay :
-	rm -rf src/board/rootfs_overlay/usr/bin/*
+	rm -rf src/board/rootfs_overlay/usr/*
 	rm -rf src/board/rootfs_overlay/opt/*
 
 # Clones the stable branch of buildroot.

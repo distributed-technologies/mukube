@@ -19,5 +19,4 @@ error_log="/root/errorlog_kubelet"
 depend() {
 	after net
 	need cgroups
-    need containerd
 }
