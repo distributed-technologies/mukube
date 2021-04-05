@@ -30,7 +30,7 @@ src/board/rootfs_overlay/usr/bin/kubeadm :
 	mkdir -p src/board/rootfs_overlay/usr/bin
 	wget -c https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
 	tar -xf kubernetes-server-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=3 \
-	--exclude=*.tar --exclude=*.docker_tag --exclude=*.org --exclude=*.com --exclude=*.io --exclude=*.in
+	--exclude=*.tar --exclude=*.docker_tag --exclude=**/LICENSES/**
 	rm kubernetes-server-linux-amd64.tar.gz
 
 src/board/rootfs_overlay/usr/bin/crictl :
