@@ -45,11 +45,12 @@ src/board/rootfs_overlay/usr/bin/helm :
 	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
 	rm helm-v3.5.3-linux-amd64.tar.gz
 
-src/board/rootfs_overlay/usr/local/bin/containerd :
+src/board/rootfs_overlay/usr/bin/containerd :
 	mkdir -p src/board/rootfs_overlay/
 	wget -c https://github.com/containerd/containerd/releases/download/v1.4.4/cri-containerd-cni-1.4.4-linux-amd64.tar.gz
 	tar -xf cri-containerd-cni-1.4.4-linux-amd64.tar.gz -C src/board/rootfs_overlay/
-	rm -rf src/board/rootfs_overlay/etc/systemd
+	mv src/board/rootfs_overlay/usr/local/* src/board/rootfs_overlay/usr/
+	rmdir src/board/rootfs_overlay/usr/local
 	rm cri-containerd-cni-1.4.4-linux-amd64.tar.gz
 
 
