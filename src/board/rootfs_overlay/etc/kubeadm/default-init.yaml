@@ -17,6 +17,8 @@ nodeRegistration:
   taints:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
+  kubeletExtraArgs:
+    cgroup-driver: "systemd"
 ---
 apiServer:
   timeoutForControlPlane: 4m0s
