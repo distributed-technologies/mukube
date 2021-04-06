@@ -23,13 +23,20 @@ bootloader-config-override : buildroot
 	cp -fr src/fs/iso9660/* buildroot/fs/iso9660/
 
 .PHONY : binaries-overlay
-binaries-overlay : src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl src/board/rootfs_overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
+binaries-overlay : minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl src/board/rootfs_overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
 
 # We use kubeadm as a placeholder for all the installed kubernetes binaries.
 src/board/rootfs_overlay/usr/bin/kubeadm :
 	mkdir -p src/board/rootfs_overlay/usr/bin
 	wget -c https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
 	tar -xf kubernetes-server-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=3 \
+	--exclude=*.tar --exclude=*.docker_tag --exclude=**/LICENSES/**
+	rm kubernetes-server-linux-amd64.tar.gz
+
+minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm :
+	mkdir -p minikube/board/coreos/minikube/rootfs-overlay/usr/bin
+	wget -c https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
+	tar -xf kubernetes-server-linux-amd64.tar.gz -C minikube/board/coreos/minikube/rootfs-overlay/usr/bin --strip-components=3 \
 	--exclude=*.tar --exclude=*.docker_tag --exclude=**/LICENSES/**
 	rm kubernetes-server-linux-amd64.tar.gz
 
