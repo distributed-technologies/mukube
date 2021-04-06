@@ -27,4 +27,25 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y --no-install-recommends install linux-image-$(uname -r)
 
-
+RUN apt-get update \
+	&& apt-get install -y apt dpkg apt-utils ca-certificates \
+	&& apt-get upgrade -y \
+	&& apt-get install -y \
+		build-essential \
+		git \
+		wget \
+		cpio \
+		python \
+		unzip \
+		bc \
+		gcc-multilib \
+		automake \
+		libtool \
+		gnupg2 \
+		p7zip-full \
+		locales \
+		rsync \
+		dumb-init \
+		golang-go \
+		libpcre3-dev \
+	&& rm -rf /var/lib/apt/lists/*
