@@ -1,8 +1,9 @@
 [Match]
-Name=eth*
+Name=eth0
 
 [Network]
-DHCP=ipv4
+Address=192.168.122.140
+Gateway=192.168.122.1
 LinkLocalAddressing=no
 
 [DHCP]
