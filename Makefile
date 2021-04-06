@@ -23,7 +23,7 @@ bootloader-config-override : buildroot
 	cp -fr src/fs/iso9660/* buildroot/fs/iso9660/
 
 .PHONY : binaries-overlay
-binaries-overlay : minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl src/board/rootfs_overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
+binaries-overlay : minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl minikube/board/coreos/minikube/rootfs-overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
 
 # We use kubeadm as a placeholder for all the installed kubernetes binaries.
 src/board/rootfs_overlay/usr/bin/kubeadm :
