@@ -1,14 +1,14 @@
 
 # Recreate the config file in buildroot and invoke the buildscript.
 default : buildroot bootloader-config-override binaries-overlay
-	$(MAKE) -C buildroot BR2_EXTERNAL=../src defconfig BR2_DEFCONFIG=../config
+	$(MAKE) -C buildroot BR2_EXTERNAL=../src:../minikube defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot
 	cd buildroot/output/images && find | cpio -pd ../../../output
 	mv -f output/rootfs.iso9660 output/rootfs.iso
 
 # Uses the buildroot default configurations to save our configurations.
 menuconfig : buildroot
-	$(MAKE) -C buildroot BR2_EXTERNAL=../src defconfig BR2_DEFCONFIG=../config
+	$(MAKE) -C buildroot BR2_EXTERNAL=../src:../minikube defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot menuconfig
 	$(MAKE) -C buildroot savedefconfig BR2_DEFCONFIG=../config
 
@@ -46,11 +46,12 @@ src/board/rootfs_overlay/usr/bin/helm :
 	rm helm-v3.5.3-linux-amd64.tar.gz
 
 src/board/rootfs_overlay/usr/bin/containerd :
-	mkdir -p src/board/rootfs_overlay/
+	mkdir -p src/board/rootfs_overlay/usr/bin
 	wget -c https://github.com/containerd/containerd/releases/download/v1.4.4/cri-containerd-cni-1.4.4-linux-amd64.tar.gz
 	tar -xf cri-containerd-cni-1.4.4-linux-amd64.tar.gz -C src/board/rootfs_overlay/
-	mv src/board/rootfs_overlay/usr/local/* src/board/rootfs_overlay/usr/
-	rmdir src/board/rootfs_overlay/usr/local
+	mv src/board/rootfs_overlay/usr/local/bin/* src/board/rootfs_overlay/usr/bin/
+	mv src/board/rootfs_overlay/usr/local/sbin/* src/board/rootfs_overlay/usr/bin/
+	rmdir src/board/rootfs_overlay/usr/local/bin src/board/rootfs_overlay/usr/local/sbin src/board/rootfs_overlay/usr/local
 	rm cri-containerd-cni-1.4.4-linux-amd64.tar.gz
 
 
