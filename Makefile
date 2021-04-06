@@ -46,10 +46,10 @@ src/board/rootfs_overlay/usr/bin/crictl :
 	tar -xf crictl-v1.20.0-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=0
 	rm crictl-v1.20.0-linux-amd64.tar.gz
 
-src/board/rootfs_overlay/usr/bin/helm :
-	mkdir -p src/board/rootfs_overlay/usr/bin
+minikube/board/coreos/minikube/rootfs-overlay/usr/bin/helm :
+	mkdir -p minikube/board/coreos/minikube/rootfs-overlay/usr/bin
 	wget -c https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz
-	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
+	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C minikube/board/coreos/minikube/rootfs-overlay/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
 	rm helm-v3.5.3-linux-amd64.tar.gz
 
 src/board/rootfs_overlay/usr/bin/containerd :
