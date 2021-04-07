@@ -1,6 +1,7 @@
+DOCKER_BUILD_IMAGE = mukube/mukube_builder
 
 # Recreate the config file in buildroot and invoke the buildscript.
-default : buildroot bootloader-config-override binaries-overlay
+default : buildroot binaries-overlay
 	$(MAKE) -C buildroot BR2_EXTERNAL=../src:../minikube defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot
 	cd buildroot/output/images && find | cpio -pd ../../../output
@@ -17,6 +18,18 @@ linux-menuconfig : buildroot
 	$(MAKE) -C buildroot BR2_EXTERNAL=../src defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot linux-menuconfig
 	$(MAKE) -C buildroot linux-update-defconfig
+
+build-in-container : 
+	docker run --rm --workdir /workspace --volume $(CURDIR):/workspace \
+	$(DOCKER_BUILD_IMAGE) make 
+
+menuconfig-in-container :
+	docker run -it --rm --workdir /workspace --volume $(CURDIR):/workspace \
+	$(DOCKER_BUILD_IMAGE) make menuconfig
+
+docker-image : $(DOCKER_BUILD_IMAGE)
+$(DOCKER_BUILD_IMAGE) : .devcontainer/Dockerfile.build
+	docker build -t $@ -f $< $(dir $<) 
 
 .PHONY : binaries-overlay
 binaries-overlay : minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl minikube/board/coreos/minikube/rootfs-overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
