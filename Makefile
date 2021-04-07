@@ -18,10 +18,6 @@ linux-menuconfig : buildroot
 	$(MAKE) -C buildroot linux-menuconfig
 	$(MAKE) -C buildroot linux-update-defconfig
 
-# Overwrites static isolinux bootloader files in the buildroot project.
-bootloader-config-override : buildroot
-	cp -fr src/fs/iso9660/* buildroot/fs/iso9660/
-
 .PHONY : binaries-overlay
 binaries-overlay : minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl minikube/board/coreos/minikube/rootfs-overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
 
