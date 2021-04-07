@@ -1,4 +1,6 @@
-DOCKER_BUILD_IMAGE = mukube/mukube_builder
+BUILDROOT_BRANCH=2020.11.3
+DOCKER_BUILD_IMAGE=mukube/mukube_builder
+DOCKER_TEST_IMAGE=mukube/mukube_tester
 
 # Recreate the config file in buildroot and invoke the buildscript.
 default : buildroot binaries-overlay
@@ -27,9 +29,20 @@ menuconfig-in-container :
 	docker run -it --rm --workdir /workspace --volume $(CURDIR):/workspace \
 	$(DOCKER_BUILD_IMAGE) make menuconfig
 
-docker-image : $(DOCKER_BUILD_IMAGE)
+test-in-container : 
+	docker run --privileged -it --rm --workdir /workspace \
+	--volume $(CURDIR)/testsuite:/workspace --volume $(CURDIR)/output:/output \
+	--device=/dev/kvm --device=/dev/net/tun \
+	-v /sys/fs/cgroup:/sys/fs/cgroup:rw --cap-add=NET_ADMIN --cap-add=SYS_ADMIN \
+	$(DOCKER_TEST_IMAGE) 
+
+# build the docker images used by the make targets
+docker-image : $(DOCKER_BUILD_IMAGE) $(DOCKER_TEST_IMAGE)
 $(DOCKER_BUILD_IMAGE) : .devcontainer/Dockerfile.build
 	docker build -t $@ -f $< $(dir $<) 
+$(DOCKER_TEST_IMAGE) : .devcontainer/Dockerfile.test
+	docker build -t $@ -f $< $(dir $<)
+
 
 .PHONY : binaries-overlay
 binaries-overlay : minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl minikube/board/coreos/minikube/rootfs-overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
@@ -79,7 +92,7 @@ clean-overlay :
 # Clones the stable branch of buildroot.
 # This is released every three months, the tag is YYYY.MM.x
 buildroot :
-	git clone --depth 1 --branch 2020.11.3 git://git.buildroot.net/buildroot
+	git clone --depth 1 --branch $(BUILDROOT_BRANCH) git://git.buildroot.net/buildroot
 
 .PHONY : clean
 clean :

@@ -24,8 +24,8 @@ while {1} {
 }
 
 # Make a new definition of the mukube-test domain.
-system virt-install --name mukube-test --hvm --ram 2048 --vcpus 2 --network default,model=e1000 --graphics none --os-variant generic --livecd --nodisk --noreboot \
-    --cdrom /workspace/output/rootfs.iso 
+system virt-install --name mukube-test --hvm --ram 16384 --vcpus 2 --network default,model=e1000 --graphics none --os-variant generic --livecd --nodisk --noreboot \
+    --cdrom /output/rootfs.iso 
 
 spawn virsh start mukube-test --console
 
