@@ -1,0 +1,37 @@
+
+FROM ubuntu:20.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+	&& apt-get install -y apt dpkg apt-utils ca-certificates \
+	&& apt-get upgrade -y \
+	&& apt-get install -y \
+		automake \
+		bc \
+		binutils \ 
+		build-essential \
+		dumb-init \
+		bc \
+		cpio \
+		libtool \
+		libncurses-dev \
+		file \
+		g++ \
+		gcc \
+		gcc-multilib \
+		git \
+		gnupg2 \
+		golang-go \
+		libpcre3-dev \
+		locales \
+		make \
+		p7zip-full \
+		patch \ 
+		python \
+		rsync \
+		unzip \
+		wget \
+	&& rm -rf /var/lib/apt/lists/*
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["/bin/bash"]
