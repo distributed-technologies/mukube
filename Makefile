@@ -94,6 +94,11 @@ clean-overlay :
 buildroot :
 	git clone --depth 1 --branch $(BUILDROOT_BRANCH) git://git.buildroot.net/buildroot
 
+# Clone the mukube-configurator
+mukube-configurator :
+	git clone https://github.com/distributed-technologies/mukube-configurator.git
+
+
 .PHONY : clean
 clean :
 	rm -rf output/*
