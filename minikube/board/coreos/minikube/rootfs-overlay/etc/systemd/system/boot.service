@@ -1,0 +1,21 @@
+
+[Unit]
+Description=boot service for booting the host platform
+
+After=containerd.service
+
+[Service]
+ExecStart=/boot.sh
+
+TimeoutStartSec=1200
+Type=oneshot
+Delegate=yes
+KillMode=process
+Restart=no
+LimitNPROC=infinity
+LimitCORE=infinity
+LimitNOFILE=1048576
+
+
+[Install]
+WantedBy=multi-user.target
