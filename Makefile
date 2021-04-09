@@ -44,6 +44,16 @@ $(DOCKER_TEST_IMAGE) : .devcontainer/Dockerfile.test
 	docker build -t $@ -f $< $(dir $<)
 
 
+master-overlay : default 
+	$(MAKE) -C mukube-configurator build-cluster -j
+	cp -r mukube-configurator/build/cluster/master/master1/* minikube/board/coreos/minikube/rootfs-node-overlay/
+
+worker-overlay : 
+
+
+
+
+
 .PHONY : binaries-overlay
 binaries-overlay : minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl minikube/board/coreos/minikube/rootfs-overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
 
