@@ -67,10 +67,6 @@ $(OVERLAY_DIR)/usr/bin/helm :
 	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C $(OVERLAY_DIR)/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
 	rm helm-v3.5.3-linux-amd64.tar.gz
 
-.PHONY : clean-overlay
-clean-overlay :
-	rm -rf src/board/rootfs_overlay/usr/*
-
 # Clones the stable branch of buildroot.
 # This is released every three months, the tag is YYYY.MM.x
 buildroot :
