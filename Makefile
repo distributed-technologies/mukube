@@ -45,7 +45,7 @@ $(DOCKER_BUILD_IMAGE) : .devcontainer/Dockerfile.build
 $(DOCKER_TEST_IMAGE) : .devcontainer/Dockerfile.test
 	docker build -t $@ -f $< $(dir $<)
 
-OVERLAY_DIR = external/board/rootfs_overlay
+OVERLAY_DIR = external_tree/board/rootfs_overlay
 BINARIES = 
 .PHONY : binaries-overlay
 binaries-overlay : $(BINARIES)
@@ -77,7 +77,7 @@ mukube-configurator :
 
 
 CONFIGURATOR_ARTIFACTS_DIR = mukube-configurator/artifacts/cluster
-NODE_OVERLAY_DIR=external/board/rootfs-node-overlay
+NODE_OVERLAY_DIR=external_tree/board/rootfs-node-overlay
 
 TARGET_ISOS =
 define ISO_MAKE_TARGET
