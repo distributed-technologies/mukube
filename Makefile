@@ -1,24 +1,24 @@
 BUILDROOT_BRANCH=2020.11.3
+BR2_EXTERNAL=minikube
 DOCKER_BUILD_IMAGE=mukube/mukube_builder
 DOCKER_TEST_IMAGE=mukube/mukube_tester
 ISO_NAME ?= rootfs.iso
 
 # Recreate the config file in buildroot and invoke the buildscript.
 default : buildroot binaries-overlay
-	$(MAKE) -C buildroot BR2_EXTERNAL=../src:../minikube defconfig BR2_DEFCONFIG=../config
+	$(MAKE) -C buildroot defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot
-	cd buildroot/output/images && find | cpio -pd ../../../output
-	mv -f output/rootfs.iso9660 output/$(ISO_NAME)
+	mv -f buildroot/output/images/rootfs.iso9660 output/$(ISO_NAME)
 
 # Uses the buildroot default configurations to save our configurations.
 menuconfig : buildroot
-	$(MAKE) -C buildroot BR2_EXTERNAL=../src:../minikube defconfig BR2_DEFCONFIG=../config
+	$(MAKE) -C buildroot defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot menuconfig
 	$(MAKE) -C buildroot savedefconfig BR2_DEFCONFIG=../config
 
 # Loads the defaultconfig into buildroot and edits the linux kernel config
 linux-menuconfig : buildroot
-	$(MAKE) -C buildroot BR2_EXTERNAL=../src defconfig BR2_DEFCONFIG=../config
+	$(MAKE) -C buildroot defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot linux-menuconfig
 	$(MAKE) -C buildroot linux-update-defconfig
 
@@ -77,26 +77,23 @@ mukube-configurator :
 	git clone https://github.com/distributed-technologies/mukube-configurator.git
 
 
-
 CONFIGURATOR_ARTIFACTS_DIR = mukube-configurator/artifacts/cluster
 NODE_OVERLAY_DIR=minikube/board/coreos/minikube/rootfs-node-overlay
 
 TARGET_ISOS =
 define ISO_MAKE_TARGET
 TARGET_ISOS += output/$1.iso
-output/$1.iso : clean-buildroot-target install-overlay/$1.tar
+output/$1.iso : 
+	$$(MAKE) -j clean-buildroot-target clean-node-overlay 
+	tar -xf $(CONFIGURATOR_ARTIFACTS_DIR)/$1.tar -C $(NODE_OVERLAY_DIR)
 	ISO_NAME=$$(@F) $$(MAKE) 
-
-.PHONY : install-overlay/$1.tar
-install-overlay/$1.tar : clean-node-overlay
-	tar -xf $(CONFIGURATOR_ARTIFACTS_DIR)/$$(@F) -C $(NODE_OVERLAY_DIR)
 endef
 
 $(foreach T,$(shell ls $(CONFIGURATOR_ARTIFACTS_DIR)),$(eval $(call ISO_MAKE_TARGET,$(basename $T))))
 
 .PHONY : cluster
-cluster : $(TARGET_ISOS)
-	@echo "Configure the cluster by running the mukube-configurator"
+cluster : mukube-configurator $(TARGET_ISOS)
+	@echo "Configure the cluster by running the mukube-configurator script"
 
 
 ## clean-buildroot-target: Removes target and images folders in buildroot and stamp files to remake them.
@@ -104,7 +101,7 @@ cluster : $(TARGET_ISOS)
 clean-buildroot-target :
 	rm -rf buildroot/output/target/ buildroot/output/images/
 	find buildroot/output -name ".stamp_target_installed" |xargs rm -rf 
-	find buildroot/output -name ".stamp_images_imstalled" |xargs rm -rf 
+	find buildroot/output -name ".stamp_images_installed" |xargs rm -rf 
 
 .PHONY : clean-node-overlay
 clean-node-overlay : 
@@ -115,5 +112,5 @@ clean :
 	rm -rf output/*
 
 .PHONY : distclean
-distclean : clean-overlay clean
+distclean : clean
 	$(MAKE) -C buildroot distclean
