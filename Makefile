@@ -1,24 +1,23 @@
 BUILDROOT_BRANCH=2020.11.3
-BR2_EXTERNAL=external
 DOCKER_BUILD_IMAGE=mukube/mukube_builder
 DOCKER_TEST_IMAGE=mukube/mukube_tester
 ISO_NAME ?= rootfs.iso
 
 # Recreate the config file in buildroot and invoke the buildscript.
 default : buildroot binaries-overlay
-	$(MAKE) -C buildroot defconfig BR2_DEFCONFIG=../config
+	$(MAKE) -C buildroot BR2_EXTERNAL=../external_tree defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot
 	mv -f buildroot/output/images/rootfs.iso9660 output/$(ISO_NAME)
 
 # Uses the buildroot default configurations to save our configurations.
 menuconfig : buildroot
-	$(MAKE) -C buildroot defconfig BR2_DEFCONFIG=../config
+	$(MAKE) -C buildroot BR2_EXTERNAL=../external_tree defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot menuconfig
 	$(MAKE) -C buildroot savedefconfig BR2_DEFCONFIG=../config
 
 # Loads the defaultconfig into buildroot and edits the linux kernel config
 linux-menuconfig : buildroot
-	$(MAKE) -C buildroot defconfig BR2_DEFCONFIG=../config
+	$(MAKE) -C buildroot BR2_EXTERNAL=../external_tree defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot linux-menuconfig
 	$(MAKE) -C buildroot linux-update-defconfig
 
@@ -46,7 +45,7 @@ $(DOCKER_BUILD_IMAGE) : .devcontainer/Dockerfile.build
 $(DOCKER_TEST_IMAGE) : .devcontainer/Dockerfile.test
 	docker build -t $@ -f $< $(dir $<)
 
-OVERLAY_DIR = external/board/coreos/minikube/rootfs_overlay
+OVERLAY_DIR = external/board/rootfs_overlay
 BINARIES = 
 .PHONY : binaries-overlay
 binaries-overlay : $(BINARIES)
@@ -78,7 +77,7 @@ mukube-configurator :
 
 
 CONFIGURATOR_ARTIFACTS_DIR = mukube-configurator/artifacts/cluster
-NODE_OVERLAY_DIR=external/board/coreos/minikube/rootfs-node-overlay
+NODE_OVERLAY_DIR=external/board/rootfs-node-overlay
 
 TARGET_ISOS =
 define ISO_MAKE_TARGET
