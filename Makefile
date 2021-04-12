@@ -43,6 +43,15 @@ $(DOCKER_BUILD_IMAGE) : .devcontainer/Dockerfile.build
 $(DOCKER_TEST_IMAGE) : .devcontainer/Dockerfile.test
 	docker build -t $@ -f $< $(dir $<)
 
+NODE_OVERLAY_DIR=minikube/board/coreos/minikube/rootfs-node-overlay
+install-overlay/mukube_master1.tar : 
+	tar -xf mukube-configurator/artifacts/cluster/$(@F) -C $(NODE_OVERLAY_DIR)
+
+reset-target-without-overlay :
+	rm -rf buildroot/output/target buildroot/output/images
+	find buildroot/output -name ".stamp_target_installed" |xargs rm -rf 
+	find buildroot/output -name ".stamp_images_imstalled" |xargs rm -rf 
+	rm -rf minikube/board/coreos/minikube/rootfs-node-overlay/* 
 
 .PHONY : binaries-overlay
 binaries-overlay : minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl minikube/board/coreos/minikube/rootfs-overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
@@ -93,6 +102,11 @@ clean-overlay :
 # This is released every three months, the tag is YYYY.MM.x
 buildroot :
 	git clone --depth 1 --branch $(BUILDROOT_BRANCH) git://git.buildroot.net/buildroot
+
+# Clone the mukube-configurator
+mukube-configurator :
+	git clone https://github.com/distributed-technologies/mukube-configurator.git
+
 
 .PHONY : clean
 clean :
