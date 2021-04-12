@@ -48,7 +48,7 @@ install-overlay/mukube_master1.tar :
 	tar -xf mukube-configurator/artifacts/cluster/$(@F) -C $(NODE_OVERLAY_DIR)
 
 reset-target-without-overlay :
-	rm -rf buildroot/output/target buildroot/output/images
+	rm -rf buildroot/output/target/* buildroot/output/images/*
 	find buildroot/output -name ".stamp_target_installed" |xargs rm -rf 
 	find buildroot/output -name ".stamp_images_imstalled" |xargs rm -rf 
 	rm -rf minikube/board/coreos/minikube/rootfs-node-overlay/* 
