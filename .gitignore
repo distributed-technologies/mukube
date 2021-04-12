@@ -1,5 +1,5 @@
 buildroot/
-output/
+output/*
 *.sum
 *.log
 
@@ -7,5 +7,5 @@ output/
 src/board/rootfs_overlay/usr/*
 src/board/rootfs_overlay/opt/*
 src/board/rootfs_overlay/etc/cni/*
-minikube/board/coreos/minikube/rootfs-overlay/usr/bin/*
-minikube/board/coreos/minikube/rootfs-node-overlay/*
+external/board/coreos/minikube/rootfs-overlay/usr/bin/*
+external/board/coreos/minikube/rootfs-node-overlay/*
