@@ -1,13 +1,14 @@
 BUILDROOT_BRANCH=2020.11.3
 DOCKER_BUILD_IMAGE=mukube/mukube_builder
 DOCKER_TEST_IMAGE=mukube/mukube_tester
+ISO_NAME ?= rootfs.iso
 
 # Recreate the config file in buildroot and invoke the buildscript.
 default : buildroot binaries-overlay
 	$(MAKE) -C buildroot BR2_EXTERNAL=../src:../minikube defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot
 	cd buildroot/output/images && find | cpio -pd ../../../output
-	mv -f output/rootfs.iso9660 output/rootfs.iso
+	mv -f output/rootfs.iso9660 output/$(ISO_NAME)
 
 # Uses the buildroot default configurations to save our configurations.
 menuconfig : buildroot
@@ -38,65 +39,37 @@ test-in-container :
 
 # build the docker images used by the make targets
 docker-image : $(DOCKER_BUILD_IMAGE) $(DOCKER_TEST_IMAGE)
+
 $(DOCKER_BUILD_IMAGE) : .devcontainer/Dockerfile.build
 	docker build -t $@ -f $< $(dir $<) 
+
 $(DOCKER_TEST_IMAGE) : .devcontainer/Dockerfile.test
 	docker build -t $@ -f $< $(dir $<)
 
-NODE_OVERLAY_DIR=minikube/board/coreos/minikube/rootfs-node-overlay
-install-overlay/mukube_master1.tar : 
-	tar -xf mukube-configurator/artifacts/cluster/$(@F) -C $(NODE_OVERLAY_DIR)
-
-reset-target-without-overlay :
-	rm -rf buildroot/output/target/* buildroot/output/images/*
-	find buildroot/output -name ".stamp_target_installed" |xargs rm -rf 
-	find buildroot/output -name ".stamp_images_imstalled" |xargs rm -rf 
-	rm -rf minikube/board/coreos/minikube/rootfs-node-overlay/* 
-
+OVERLAY_DIR = minikube/board/coreos/minikube/rootfs_overlay
+BINARIES = 
 .PHONY : binaries-overlay
-binaries-overlay : minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/kubeadm src/board/rootfs_overlay/usr/bin/crictl minikube/board/coreos/minikube/rootfs-overlay/usr/bin/helm src/board/rootfs_overlay/usr/bin/containerd 
+binaries-overlay : $(BINARIES)
 
+BINARIES += $(OVERLAY_DIR)/usr/bin/kubeadm
 # We use kubeadm as a placeholder for all the installed kubernetes binaries.
-src/board/rootfs_overlay/usr/bin/kubeadm :
-	mkdir -p src/board/rootfs_overlay/usr/bin
+$(OVERLAY_DIR)/usr/bin/kubeadm :
+	mkdir -p $(OVERLAY_DIR)/usr/bin
 	wget -c https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
-	tar -xf kubernetes-server-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=3 \
+	tar -xf kubernetes-server-linux-amd64.tar.gz -C $(OVERLAY_DIR)/usr/bin --strip-components=3 \
 	--exclude=*.tar --exclude=*.docker_tag --exclude=**/LICENSES/**
 	rm kubernetes-server-linux-amd64.tar.gz
 
-minikube/board/coreos/minikube/rootfs-overlay/usr/bin/kubeadm :
-	mkdir -p minikube/board/coreos/minikube/rootfs-overlay/usr/bin
-	wget -c https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
-	tar -xf kubernetes-server-linux-amd64.tar.gz -C minikube/board/coreos/minikube/rootfs-overlay/usr/bin --strip-components=3 \
-	--exclude=*.tar --exclude=*.docker_tag --exclude=**/LICENSES/**
-	rm kubernetes-server-linux-amd64.tar.gz
-
-src/board/rootfs_overlay/usr/bin/crictl :
-	mkdir -p src/board/rootfs_overlay/usr/bin
-	wget https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.20.0/crictl-v1.20.0-linux-amd64.tar.gz
-	tar -xf crictl-v1.20.0-linux-amd64.tar.gz -C src/board/rootfs_overlay/usr/bin --strip-components=0
-	rm crictl-v1.20.0-linux-amd64.tar.gz
-
-minikube/board/coreos/minikube/rootfs-overlay/usr/bin/helm :
-	mkdir -p minikube/board/coreos/minikube/rootfs-overlay/usr/bin
+BINARIES += $(OVERLAY_DIR)/usr/bin/helm
+$(OVERLAY_DIR)/usr/bin/helm :
+	mkdir -p $(OVERLAY_DIR)/usr/bin
 	wget -c https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz
-	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C minikube/board/coreos/minikube/rootfs-overlay/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
+	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C $(OVERLAY_DIR)/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
 	rm helm-v3.5.3-linux-amd64.tar.gz
-
-src/board/rootfs_overlay/usr/bin/containerd :
-	mkdir -p src/board/rootfs_overlay/usr/bin
-	wget -c https://github.com/containerd/containerd/releases/download/v1.4.4/cri-containerd-cni-1.4.4-linux-amd64.tar.gz
-	tar -xf cri-containerd-cni-1.4.4-linux-amd64.tar.gz -C src/board/rootfs_overlay/
-	mv src/board/rootfs_overlay/usr/local/bin/* src/board/rootfs_overlay/usr/bin/
-	mv src/board/rootfs_overlay/usr/local/sbin/* src/board/rootfs_overlay/usr/bin/
-	rmdir src/board/rootfs_overlay/usr/local/bin src/board/rootfs_overlay/usr/local/sbin src/board/rootfs_overlay/usr/local
-	rm cri-containerd-cni-1.4.4-linux-amd64.tar.gz
-
 
 .PHONY : clean-overlay
 clean-overlay :
 	rm -rf src/board/rootfs_overlay/usr/*
-	rm -rf src/board/rootfs_overlay/opt/*
 
 # Clones the stable branch of buildroot.
 # This is released every three months, the tag is YYYY.MM.x
@@ -107,6 +80,39 @@ buildroot :
 mukube-configurator :
 	git clone https://github.com/distributed-technologies/mukube-configurator.git
 
+
+
+CONFIGURATOR_ARTIFACTS_DIR = mukube-configurator/artifacts/cluster
+NODE_OVERLAY_DIR=minikube/board/coreos/minikube/rootfs-node-overlay
+
+TARGET_ISOS =
+define ISO_MAKE_TARGET
+TARGET_ISOS += output/$1.iso
+output/$1.iso : clean-buildroot-target install-overlay/$1.tar
+	ISO_NAME=$$(@F) $$(MAKE) 
+
+.PHONY : install-overlay/$1.tar
+install-overlay/$1.tar : clean-node-overlay
+	tar -xf $(CONFIGURATOR_ARTIFACTS_DIR)/$$(@F) -C $(NODE_OVERLAY_DIR)
+endef
+
+$(foreach T,$(shell ls $(CONFIGURATOR_ARTIFACTS_DIR)),$(eval $(call ISO_MAKE_TARGET,$(basename $T))))
+
+.PHONY : cluster
+cluster : $(TARGET_ISOS)
+	@echo "Configure the cluster by running the mukube-configurator"
+
+
+## clean-buildroot-target: Removes target and images folders in buildroot and stamp files to remake them.
+.PHONY : clean-buildroot-target
+clean-buildroot-target :
+	rm -rf buildroot/output/target/ buildroot/output/images/
+	find buildroot/output -name ".stamp_target_installed" |xargs rm -rf 
+	find buildroot/output -name ".stamp_images_imstalled" |xargs rm -rf 
+
+.PHONY : clean-node-overlay
+clean-node-overlay : 
+	rm -rf $(NODE_OVERLAY_DIR)/* 
 
 .PHONY : clean
 clean :
