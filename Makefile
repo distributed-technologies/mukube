@@ -111,5 +111,5 @@ clean :
 	rm -rf output/*
 
 .PHONY : distclean
-distclean : clean
+distclean : clean clean-node-overlay
 	$(MAKE) -C buildroot distclean
