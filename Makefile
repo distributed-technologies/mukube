@@ -98,9 +98,11 @@ cluster : mukube-configurator $(TARGET_ISOS)
 ## clean-buildroot-target: Removes target and images folders in buildroot and stamp files to remake them.
 .PHONY : clean-buildroot-target
 clean-buildroot-target :
-	rm -rf buildroot/output/target/ buildroot/output/images/
+	rm -rf buildroot/output/target/ buildroot/output/images/ 
 	find buildroot/output -name ".stamp_target_installed" |xargs rm -rf 
 	find buildroot/output -name ".stamp_images_installed" |xargs rm -rf 
+	# The gcc package installs libraries with the POST_INSTALL_HOOK, so we need to force this step to happen again
+	rm -rf buildroot/output/build/host-gcc-final-*/.stamp_host_installed
 
 .PHONY : clean-node-overlay
 clean-node-overlay : 
