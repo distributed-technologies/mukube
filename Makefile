@@ -7,7 +7,7 @@ ISO_NAME ?= rootfs.iso
 default : buildroot binaries-overlay
 	$(MAKE) -C buildroot BR2_EXTERNAL=../external_tree defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot
-	mkdir output 
+	mkdir -p output
 	mv -f buildroot/output/images/rootfs.iso9660 output/$(ISO_NAME)
 
 # Uses the buildroot default configurations to save our configurations.
