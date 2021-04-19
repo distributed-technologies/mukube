@@ -60,12 +60,6 @@ $(OVERLAY_DIR)/usr/bin/kubeadm :
 	--exclude=*.tar --exclude=*.docker_tag --exclude=**/LICENSES/**
 	rm kubernetes-server-linux-amd64.tar.gz
 
-BINARIES += $(OVERLAY_DIR)/usr/bin/helm
-$(OVERLAY_DIR)/usr/bin/helm :
-	mkdir -p $(OVERLAY_DIR)/usr/bin
-	wget -c https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz
-	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C $(OVERLAY_DIR)/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
-	rm helm-v3.5.3-linux-amd64.tar.gz
 
 # Clones the stable branch of buildroot.
 # This is released every three months, the tag is YYYY.MM.x
