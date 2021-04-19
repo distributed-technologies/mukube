@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HELM
+	bool "helm"
+	default y
+	help
+	  Kubernetes package manager.
+	  
+	  https://helm.sh 
