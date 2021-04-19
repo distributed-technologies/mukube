@@ -103,6 +103,10 @@ clean-buildroot-target :
 clean-node-overlay : 
 	rm -rf $(NODE_OVERLAY_DIR)/* 
 
+.PHONY : clean-binaries-overlay
+clean-binaries-overlay : 
+	rm -rf $(OVERLAY_DIR)/usr/bin
+
 .PHONY : clean
 clean :
 	rm -rf output/*
