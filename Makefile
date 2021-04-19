@@ -48,8 +48,6 @@ $(DOCKER_TEST_IMAGE) : .devcontainer/Dockerfile.test
 
 OVERLAY_DIR = external_tree/board/rootfs-overlay
 BINARIES = 
-.PHONY : binaries-overlay
-binaries-overlay : $(BINARIES)
 
 BINARIES += $(OVERLAY_DIR)/usr/bin/kubeadm
 # We use kubeadm as a placeholder for all the installed kubernetes binaries.
@@ -60,6 +58,8 @@ $(OVERLAY_DIR)/usr/bin/kubeadm :
 	--exclude=*.tar --exclude=*.docker_tag --exclude=**/LICENSES/**
 	rm kubernetes-server-linux-amd64.tar.gz
 
+.PHONY : binaries-overlay
+binaries-overlay : $(BINARIES)
 
 # Clones the stable branch of buildroot.
 # This is released every three months, the tag is YYYY.MM.x
