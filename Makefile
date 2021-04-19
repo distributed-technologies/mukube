@@ -46,7 +46,7 @@ $(DOCKER_BUILD_IMAGE) : .devcontainer/Dockerfile.build
 $(DOCKER_TEST_IMAGE) : .devcontainer/Dockerfile.test
 	docker build -t $@ -f $< $(dir $<)
 
-OVERLAY_DIR = external_tree/board/rootfs_overlay
+OVERLAY_DIR = external_tree/board/rootfs-overlay
 BINARIES = 
 .PHONY : binaries-overlay
 binaries-overlay : $(BINARIES)
