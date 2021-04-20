@@ -1,3 +1,2 @@
 config BR2_PACKAGE_SCHEDULED_STOP
 	bool "scheduled-stop"
-	default y

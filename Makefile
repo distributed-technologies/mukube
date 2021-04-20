@@ -7,7 +7,7 @@ ISO_NAME ?= rootfs.iso
 default : buildroot binaries-overlay
 	$(MAKE) -C buildroot BR2_EXTERNAL=../external_tree defconfig BR2_DEFCONFIG=../config
 	$(MAKE) -C buildroot
-	mkdir -p output
+	mkdir -p output 
 	mv -f buildroot/output/images/rootfs.iso9660 output/$(ISO_NAME)
 
 # Uses the buildroot default configurations to save our configurations.
@@ -58,12 +58,8 @@ $(OVERLAY_DIR)/usr/bin/kubeadm :
 	--exclude=*.tar --exclude=*.docker_tag --exclude=**/LICENSES/**
 	rm kubernetes-server-linux-amd64.tar.gz
 
-BINARIES += $(OVERLAY_DIR)/usr/bin/helm
-$(OVERLAY_DIR)/usr/bin/helm :
-	mkdir -p $(OVERLAY_DIR)/usr/bin
-	wget -c https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz
-	tar -xf helm-v3.5.3-linux-amd64.tar.gz -C $(OVERLAY_DIR)/usr/bin --strip-components=1 --exclude='LICENSE' --exclude='README.md'
-	rm helm-v3.5.3-linux-amd64.tar.gz
+.PHONY : binaries-overlay
+binaries-overlay : $(BINARIES)
 
 .PHONY : binaries-overlay
 binaries-overlay : $(BINARIES)
@@ -110,9 +106,9 @@ clean-buildroot-target :
 clean-node-overlay : 
 	rm -rf $(NODE_OVERLAY_DIR)/* 
 
-.PHONY : clean-fs-overlay
-clean-binaries-overlay :
-	rm -rf $(OVERLAY_DIR)/usr
+.PHONY : clean-binaries-overlay
+clean-binaries-overlay : 
+	rm -rf $(OVERLAY_DIR)/usr/bin
 
 .PHONY : clean
 clean :
