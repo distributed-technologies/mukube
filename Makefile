@@ -74,7 +74,7 @@ mukube-configurator :
 	git clone https://github.com/distributed-technologies/mukube-configurator.git
 
 
-CONFIGURATOR_ARTIFACTS_DIR = mukube-configurator/artifacts/cluster
+CONFIGURATOR_ARTIFACTS_DIR = mukube-configurator/artifacts
 NODE_OVERLAY_DIR=external_tree/board/rootfs-node-overlay
 
 TARGET_ISOS =
