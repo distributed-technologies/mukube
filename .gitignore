@@ -1,5 +1,4 @@
 buildroot/
-mukube-configurator/
 output/*
 *.sum
 *.log
