@@ -1,4 +1,0 @@
-[submodule "mukube-configurator"]
-	path = mukube-configurator
-	url = https://github.com/distributed-technologies/mukube-configurator.git
-	branch = DNS-configuration
