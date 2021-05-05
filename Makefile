@@ -40,9 +40,9 @@ HELM_CHARTS :=
 
 # Create make targets to download the helm packages specified in the HELM_REQUIREMENTS 
 define DOWNLOAD_HELM_PACKAGE
-url = $(shell echo $1 | cut -d % -f 1 )
-release = $(shell echo $1 | cut -d % -f 2 )
-namespace = $(shell echo $1 | cut -d % -f 3)
+release = $(shell echo $1 | cut -d % -f 1 )
+namespace = $(shell echo $1 | cut -d % -f 2)
+url = $(shell echo $1 | cut -d % -f 3- )
 HELM_CHARTS += $(HELM_DIR)/$$(release)\#$$(namespace)\#$$(notdir $$(url))
 $(HELM_DIR)/$$(release)\#$$(namespace)\#$$(notdir $$(url)) : $(HELM_DIR)/.empty
 	curl -L $$(url) -o $$@ 
