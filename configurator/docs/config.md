@@ -34,6 +34,12 @@ A join token to use by other nodes joining the cluster. This is used to establis
 #### MASTER_CERTIFICATE_KEY
 A key used to encrypt the certificates.
 
+### CONFIGURE_DNS
+A true flag to determine whether to configure DNS. If it is set to true the DNS is configured according to the CLUSTER_DNS setting.
+
+### CLUSTER_DNS
+The IP of the DNS server the cluster should use.
+
 ### Example file
 ```
 NODE_CONTROL_PLANE_VIP=192.168.1.150
