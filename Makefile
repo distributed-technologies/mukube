@@ -61,20 +61,12 @@ $(OVERLAY_DIR)/usr/bin/kubeadm :
 .PHONY : binaries-overlay
 binaries-overlay : $(BINARIES)
 
-.PHONY : binaries-overlay
-binaries-overlay : $(BINARIES)
-
 # Clones the stable branch of buildroot.
 # This is released every three months, the tag is YYYY.MM.x
 buildroot :
 	git clone --depth 1 --branch $(BUILDROOT_BRANCH) git://git.buildroot.net/buildroot
 
-# Clone the mukube-configurator
-mukube-configurator :
-	git clone https://github.com/distributed-technologies/mukube-configurator.git
-
-
-CONFIGURATOR_ARTIFACTS_DIR = mukube-configurator/artifacts
+CONFIGURATOR_ARTIFACTS_DIR = overlay-artifacts
 NODE_OVERLAY_DIR=external_tree/board/rootfs-node-overlay
 
 TARGET_ISOS =
