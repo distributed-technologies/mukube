@@ -69,12 +69,8 @@ binaries-overlay : $(BINARIES)
 buildroot :
 	git clone --depth 1 --branch $(BUILDROOT_BRANCH) git://git.buildroot.net/buildroot
 
-# Clone the mukube-configurator
-mukube-configurator :
-	git clone https://github.com/distributed-technologies/mukube-configurator.git
 
-
-CONFIGURATOR_ARTIFACTS_DIR = mukube-configurator/artifacts
+CONFIGURATOR_ARTIFACTS_DIR = configurator/artifacts
 NODE_OVERLAY_DIR=external_tree/board/rootfs-node-overlay
 
 TARGET_ISOS =
@@ -89,8 +85,8 @@ endef
 $(foreach T,$(shell ls $(CONFIGURATOR_ARTIFACTS_DIR)),$(eval $(call ISO_MAKE_TARGET,$(basename $T))))
 
 .PHONY : cluster
-cluster : mukube-configurator $(TARGET_ISOS)
-	@echo "Configure the cluster by running the mukube-configurator script"
+cluster : $(TARGET_ISOS)
+	@echo "Configure the cluster by running the configurator script"
 
 
 ## clean-buildroot-target: Removes target and images folders in buildroot and stamp files to remake them.
