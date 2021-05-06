@@ -33,5 +33,10 @@ RUN apt-get update \
 		wget \
 	&& rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["/bin/bash"]
+WORKDIR /
+RUN git clone https://github.com/distributed-technologies/mukube.git
+WORKDIR /mukube
+RUN git checkout development
+
+ENTRYPOINT ["make"]
+CMD ["cluster"]
