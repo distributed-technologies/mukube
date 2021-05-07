@@ -33,10 +33,18 @@ RUN apt-get update \
 		wget \
 	&& rm -rf /var/lib/apt/lists/*
 
-WORKDIR /
+RUN mkdir /workspace
+WORKDIR /workspace 
+
+RUN groupadd mukube-peasant; useradd -s /bin/bash --gid mukube-peasant -m mukube-peasant
+RUN chown mukube-peasant:mukube-peasant /workspace
+USER mukube-peasant
+WORKDIR /workspace 
+
 RUN git clone https://github.com/distributed-technologies/mukube.git
-WORKDIR /mukube
+WORKDIR /workspace/mukube
 RUN git checkout development
+
 
 ENTRYPOINT ["make"]
 CMD ["cluster"]

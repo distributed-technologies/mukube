@@ -70,7 +70,7 @@ buildroot :
 	git clone --depth 1 --branch $(BUILDROOT_BRANCH) git://git.buildroot.net/buildroot
 
 
-CONFIGURATOR_ARTIFACTS_DIR = configurator/artifacts
+CONFIGURATOR_ARTIFACTS_DIR = overlay-artifacts
 NODE_OVERLAY_DIR=external_tree/board/rootfs-node-overlay
 
 TARGET_ISOS =
