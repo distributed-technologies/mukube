@@ -61,9 +61,6 @@ $(OVERLAY_DIR)/usr/bin/kubeadm :
 .PHONY : binaries-overlay
 binaries-overlay : $(BINARIES)
 
-.PHONY : binaries-overlay
-binaries-overlay : $(BINARIES)
-
 # Clones the stable branch of buildroot.
 # This is released every three months, the tag is YYYY.MM.x
 buildroot :
