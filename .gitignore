@@ -1,11 +1,9 @@
 buildroot/
 output/*
+overlay-artifacts/*
 *.sum
 *.log
 
 # The contents is extracted from kubernetes server tarball
-src/board/rootfs_overlay/usr/*
-src/board/rootfs_overlay/opt/*
-src/board/rootfs_overlay/etc/cni/*
 external_tree/board/rootfs-overlay/usr/bin/*
 external_tree/board/rootfs-node-overlay/*
