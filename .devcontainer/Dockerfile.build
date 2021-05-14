@@ -33,8 +33,7 @@ RUN apt-get update \
 		wget \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /workspace
-WORKDIR /workspace 
+RUN mkdir -p /workspace
 
 RUN groupadd mukube-peasant; useradd -s /bin/bash --gid mukube-peasant -m mukube-peasant
 RUN chown mukube-peasant:mukube-peasant /workspace
