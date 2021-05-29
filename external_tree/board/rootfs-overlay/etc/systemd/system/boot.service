@@ -2,7 +2,7 @@
 [Unit]
 Description=boot service for booting the host platform
 
-After=containerd.service
+After=containerd.service kubelet.service
 
 [Service]
 ExecStart=/boot.sh
