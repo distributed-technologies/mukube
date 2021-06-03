@@ -2,4 +2,3 @@
 MACAddress=52:54:00:12:34:56
 [Link]
 Name=kvmbug0
-NamePolicy=mac
