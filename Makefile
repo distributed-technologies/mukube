@@ -53,7 +53,7 @@ BINARIES += $(OVERLAY_DIR)/usr/bin/kubeadm
 # We use kubeadm as a placeholder for all the installed kubernetes binaries.
 $(OVERLAY_DIR)/usr/bin/kubeadm :
 	mkdir -p $(OVERLAY_DIR)/usr/bin
-	wget -c https://dl.k8s.io/v1.20.5/kubernetes-server-linux-amd64.tar.gz
+	wget -c https://dl.k8s.io/v1.20.7/kubernetes-server-linux-amd64.tar.gz
 	tar -xf kubernetes-server-linux-amd64.tar.gz -C $(OVERLAY_DIR)/usr/bin --strip-components=3 \
 	--exclude=*.tar --exclude=*.docker_tag --exclude=**/LICENSES/**
 	rm kubernetes-server-linux-amd64.tar.gz
