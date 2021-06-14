@@ -1,4 +1,0 @@
-# server = "https://docker.io"
-
-[host."http://192.168.9.9:80"]
-  capabilities = ["pull", "resolve"]
